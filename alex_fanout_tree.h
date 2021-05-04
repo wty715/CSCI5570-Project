@@ -153,8 +153,7 @@ double compute_level(const std::pair<T, P> values[], int num_keys,
     DataNodeStats stats;
     double node_cost = AlexDataNode::compute_expected_cost(
         values + left_boundary, right_boundary - left_boundary,
-        AlexDataNode::kInitDensity_, expected_insert_frac, &model,
-        approximate_cost_computation, &stats);
+        AlexDataNode::kInitDensity_, expected_insert_frac, &model, &stats);
 
     cost += node_cost * (right_boundary - left_boundary) / num_keys;
 
@@ -287,8 +286,7 @@ std::pair<int, double> find_best_fanout_top_down(
                                         approximate_model_computation);
         node_costs[i] = AlexDataNode::compute_expected_cost(
             values + left, right - left, AlexDataNode::kInitDensity_,
-            expected_insert_frac, &node_models[i], approximate_cost_computation,
-            &node_stats[i]);
+            expected_insert_frac, &node_models[i], &node_stats[i]);
       }
       node_split_cost += sizeof(AlexDataNode) * kModelSizeWeight *
                          total_keys / num_node_keys;
@@ -383,7 +381,7 @@ int find_best_fanout_existing_node(const AlexModelNode* parent,
       }
       int num_actual_keys = 0;
       LinearModel<T> model;
-      typename AlexDataNode::const_iterator_type it(node, left_boundary);
+      typename AlexDataNode::Iterator it(node, left_boundary);
       LinearModelBuilder<T> builder(&model);
       for (int j = 0; it.cur_idx_ < right_boundary && !it.is_end(); it++, j++) {
         builder.add(it.key(), j);
