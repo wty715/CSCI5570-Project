@@ -10,7 +10,7 @@
 #pragma once
 
 #include "alex_base.h"
-#include "main.h"
+#include "node.h"
 
 namespace alex {
 
