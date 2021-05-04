@@ -4,7 +4,7 @@
 #include <iomanip>
 
 // initialize existed keys
-const int init_num_keys = 80000000;
+const int init_num_keys = 10000000;
 const int batch_size = 1000000;
 const int total_num_keys = 200000000;
 // 50% lookup, 50% insert
