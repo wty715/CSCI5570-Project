@@ -4,7 +4,7 @@
 #include <iomanip>
 
 // initialize existed keys
-const int init_num_keys = 10000000;
+const int init_num_keys = 1000000;
 const int batch_size = 1000000;
 const int total_num_keys = 200000000;
 // 50% lookup, 50% insert
@@ -110,8 +110,8 @@ int main(int argc, char* argv[])
         }
         double workload_elapsed_time = std::chrono::duration_cast<std::chrono::nanoseconds>(
                                                     std::chrono::high_resolution_clock::now() - workload_start_time).count();
-        if (workload_elapsed_time > 2 * 1e9 * 60) {
-            // End if exceed 2 min
+        if (workload_elapsed_time > 1 * 1e9 * 60) {
+            // End if exceed 1 min
             break;
         }
     }

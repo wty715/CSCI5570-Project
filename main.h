@@ -57,18 +57,13 @@ class Alex {
     } stats_;
 
     struct ExperimentalParams {
-        // Fanout selection method used during bulk loading: 0 means use bottom-up
-        // fanout tree, 1 means top-down
-        int fanout_selection_method = 0;
         // Policy when a data node experiences significant cost deviation.
         // 0 means always split node in 2
         // 1 means decide between no splitting or splitting in 2
         // 2 means use a full fanout tree to decide the splitting strategy
         int splitting_policy_method = 1;
-        // Splitting upwards means that a split can propagate all the way up to the
-        // root, like a B+ tree
-        // Splitting upwards can result in a better RMI, but has much more overhead
-        // than splitting sideways
+        // Splitting upwards means that a split can propagate all the way up to the root, like a B+ tree
+        // Splitting upwards can result in a better RMI, but has much more overhead than splitting sideways
         bool allow_splitting_upwards = false;
     };
     ExperimentalParams experimental_params_;
@@ -841,16 +836,10 @@ class Alex {
         // child nodes
         std::vector<fanout_tree::FTNode> used_fanout_tree_nodes;
         std::pair<int, double> best_fanout_stats;
-        if (experimental_params_.fanout_selection_method == 0) {
-            best_fanout_stats = fanout_tree::find_best_fanout_bottom_up<double, double>(
-                                values, num_keys, node, total_keys, used_fanout_tree_nodes,
-                                derived_params_.max_fanout, expected_insert_frac);
-        }
-        else if (experimental_params_.fanout_selection_method == 1) {
-            best_fanout_stats = fanout_tree::find_best_fanout_top_down<double, double>(
-                                values, num_keys, node, total_keys, used_fanout_tree_nodes,
-                                derived_params_.max_fanout, expected_insert_frac);
-        }
+        best_fanout_stats = fanout_tree::find_best_fanout_bottom_up<double, double>(
+                            values, num_keys, node, total_keys, used_fanout_tree_nodes,
+                            derived_params_.max_fanout, expected_insert_frac);
+        
         int best_fanout_tree_depth = best_fanout_stats.first;
         double best_fanout_tree_cost = best_fanout_stats.second;
 
